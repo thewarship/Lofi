@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    html, body { background: transparent; margin: 0; padding: 0; overflow: hidden; }
-  </style>
+  <style>
+    html, body { background: transparent; margin: 0; padding: 0; overflow: hidden; }
+  </style>
 </head>
 <body>
-  <audio id="player" src="https://stream.zeno.fm/f3wvbbqmdg8uv" autoplay loop></audio>
-  <script>
-    const audio = document.getElementById('player');
-    audio.volume = 0.12;
-  </script>
+  <!-- Updated working direct Lofi audio stream -->
+  <audio id="player" src="https://play.streamaudio.de/lofi" autoplay loop crossorigin="anonymous" playsinline></audio>
+  <script>
+    const audio = document.getElementById('player');
+    audio.volume = 0.12; // 12% background volume
+  </script>
 </body>
 </html>
