@@ -14,18 +14,18 @@
   </style>
 </head>
 <body>
-  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" autoplay loop crossorigin="anonymous" playsinline></audio>
+  <audio id="player" src="https://stream.chillhop.com/live" autoplay loop crossorigin="anonymous" playsinline></audio>
 
   <script>
     const audio = document.getElementById('player');
     
-    // Set to 3% volume so your voice easily overpowers it (range is 0.01 to 1.0)
+    // Set to 3% background volume
     audio.volume = 0.03;
 
     // Auto-start for Moblin
     audio.play().catch(() => {});
 
-    // Invisible click trigger for desktop browser testing (clicking the empty screen toggles audio)
+    // Invisible click trigger for desktop browser testing
     document.body.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
