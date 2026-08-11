@@ -3,32 +3,32 @@
 <head>
   <style>
     html, body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
+      background: transparent;
       margin: 0;
       padding: 0;
+      width: 100vw;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
       cursor: pointer;
-      user-select: none;
     }
   </style>
 </head>
 <body>
-  <h2>Click anywhere to play / pause Lofi</h2>
-
-  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" preload="auto"></audio>
+  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" autoplay loop crossorigin="anonymous" playsinline></audio>
 
   <script>
     const audio = document.getElementById('player');
-    audio.volume = 0.12;
+    
+    // Set to 3% volume so your voice easily overpowers it (range is 0.01 to 1.0)
+    audio.volume = 0.03;
 
+    // Auto-start for Moblin
+    audio.play().catch(() => {});
+
+    // Invisible click trigger for desktop browser testing (clicking the empty screen toggles audio)
     document.body.addEventListener('click', () => {
       if (audio.paused) {
-        audio.play().catch(e => console.log('Playback error:', e));
+        audio.play();
       } else {
         audio.pause();
       }
