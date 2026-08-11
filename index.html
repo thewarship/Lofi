@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="icon" href="data:,">
   <style>
     html, body {
       background: transparent;
@@ -15,40 +14,21 @@
   </style>
 </head>
 <body>
+  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" autoplay loop crossorigin="anonymous" playsinline></audio>
 
   <script>
-    // Create audio instance with CORS enabled
-    const audio = new Audio();
-    audio.crossOrigin = "anonymous";
-    audio.src = "https://ice1.somafm.com/groovesalad-128-mp3";
-    audio.loop = true;
+    const audio = document.getElementById('player');
+    
+    // Set to 3% volume so your voice easily overpowers it (range is 0.01 to 1.0)
+    audio.volume = 0.03;
 
-    // Web Audio API context setup
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    const source = audioCtx.createMediaElementSource(audio);
-    const gainNode = audioCtx.createGain();
+    // Auto-start for Moblin
+    audio.play().catch(() => {});
 
-    // Digital volume control (0.02 = 2%)
-    gainNode.gain.value = 0.02;
-
-    source.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    const playStream = () => {
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      audio.play().catch(err => console.log("Playback error:", err));
-    };
-
-    // Auto-attempt playback
-    playStream();
-
-    // Click handler for testing in standard desktop browsers
+    // Invisible click trigger for desktop browser testing (clicking the empty screen toggles audio)
     document.body.addEventListener('click', () => {
       if (audio.paused) {
-        playStream();
+        audio.play();
       } else {
         audio.pause();
       }
