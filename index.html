@@ -6,11 +6,19 @@
   </style>
 </head>
 <body>
-  <!-- Updated working direct Lofi audio stream -->
-  <audio id="player" src="https://play.streamaudio.de/lofi" autoplay loop crossorigin="anonymous" playsinline></audio>
+  <audio id="player" src="https://stream.zeno.fm/f3wvbbqmdg8uv" autoplay loop crossorigin="anonymous" playsinline></audio>
   <script>
     const audio = document.getElementById('player');
-    audio.volume = 0.12; // 12% background volume
+    audio.volume = 0.12;
+
+    // Retry connection if stream drops
+    audio.addEventListener('error', () => {
+      setTimeout(() => {
+        audio.src = "https://stream.zeno.fm/f3wvbbqmdg8uv";
+        audio.load();
+        audio.play().catch(() => {});
+      }, 3000);
+    });
   </script>
 </body>
 </html>
