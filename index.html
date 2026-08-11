@@ -19,14 +19,32 @@
   <script>
     const audio = document.getElementById('player');
     
-    // Set to 3% background volume
-    audio.volume = 0.03;
+    // Web Audio API gain processing to bypass mobile WebView volume restrictions
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaElementSource(audio);
+    const gainNode = audioCtx.createGain();
 
-    // Auto-start for Moblin
-    audio.play().catch(() => {});
+    // Set gain level (0.02 = 2% volume output)
+    gainNode.gain.value = 0.02;
+
+    // Connect stream -> volume control -> output
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    // Auto-start playback and resume audio context
+    const startAudio = () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      audio.play().catch(() => {});
+    };
+
+    startAudio();
 
     // Invisible click trigger for desktop browser testing
     document.body.addEventListener('click', () => {
+      startAudio();
       if (audio.paused) {
         audio.play();
       } else {
