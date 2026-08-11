@@ -2,22 +2,36 @@
 <html>
 <head>
   <style>
-    html, body { background: transparent; margin: 0; padding: 0; overflow: hidden; }
+    html, body {
+      background: #111;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
-  <audio id="player" src="https://stream.zeno.fm/f3wvbbqmdg8uv" autoplay loop crossorigin="anonymous" playsinline></audio>
+  <h2>Click anywhere to play / pause Lofi</h2>
+
+  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" preload="auto"></audio>
+
   <script>
     const audio = document.getElementById('player');
     audio.volume = 0.12;
 
-    // Retry connection if stream drops
-    audio.addEventListener('error', () => {
-      setTimeout(() => {
-        audio.src = "https://stream.zeno.fm/f3wvbbqmdg8uv";
-        audio.load();
-        audio.play().catch(() => {});
-      }, 3000);
+    document.body.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().catch(e => console.log('Playback error:', e));
+      } else {
+        audio.pause();
+      }
     });
   </script>
 </body>
