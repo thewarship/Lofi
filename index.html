@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="icon" href="data:,">
   <style>
     html, body {
       background: transparent;
@@ -14,39 +15,40 @@
   </style>
 </head>
 <body>
-  <audio id="player" src="https://ice1.somafm.com/groovesalad-128-mp3" autoplay loop crossorigin="anonymous" playsinline></audio>
 
   <script>
-    const audio = document.getElementById('player');
-    
-    // Web Audio API gain processing to bypass mobile WebView volume restrictions
+    // Create audio instance with CORS enabled
+    const audio = new Audio();
+    audio.crossOrigin = "anonymous";
+    audio.src = "https://ice1.somafm.com/groovesalad-128-mp3";
+    audio.loop = true;
+
+    // Web Audio API context setup
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
     const source = audioCtx.createMediaElementSource(audio);
     const gainNode = audioCtx.createGain();
 
-    // Set gain level (0.02 = 2% volume output)
+    // Digital volume control (0.02 = 2%)
     gainNode.gain.value = 0.02;
 
-    // Connect stream -> volume control -> output
     source.connect(gainNode);
     gainNode.connect(audioCtx.destination);
 
-    // Auto-start playback and resume audio context
-    const startAudio = () => {
+    const playStream = () => {
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
-      audio.play().catch(() => {});
+      audio.play().catch(err => console.log("Playback error:", err));
     };
 
-    startAudio();
+    // Auto-attempt playback
+    playStream();
 
-    // Invisible click trigger for desktop browser testing
+    // Click handler for testing in standard desktop browsers
     document.body.addEventListener('click', () => {
-      startAudio();
       if (audio.paused) {
-        audio.play();
+        playStream();
       } else {
         audio.pause();
       }
